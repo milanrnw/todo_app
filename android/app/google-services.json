@@ -7,18 +7,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:371587610057:android:883e7f11f105639e976418",
+        "mobilesdk_app_id": "1:371587610057:android:31d91e0799a2f277976418",
         "android_client_info": {
-          "package_name": "com.example.todo_app"
+          "package_name": "com.example.newtodoapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "371587610057-0a461opvobmh2gjcmrpbmm25mffdvh8v.apps.googleusercontent.com",
+          "client_id": "371587610057-lq486it2rlk5skcc16aj4cdhrr380h6n.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.todo_app",
-            "certificate_hash": "c9890bf9182dae9e65d3eacff3cfa243478557dc"
+            "package_name": "com.example.newtodoapp",
+            "certificate_hash": "16179295edb4212a28d851e090bac162f8c60ccc"
           }
         },
         {

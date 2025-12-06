@@ -22,7 +22,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late TextEditingController firstNameController;
   late TextEditingController lastNameController;
   final currentUser = FirebaseAuth.instance.currentUser;
-  final googleSignin = GoogleSignIn();
+  final googleSignIn = GoogleSignIn.instance;
 
   Future<void> fetchUserProfile() async {
     final currentUser = FirebaseAuth.instance.currentUser;
@@ -54,7 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _logout() async {
     try {
       await FirebaseAuth.instance.signOut();
-      await googleSignin.signOut();
+      await googleSignIn.signOut();
       if (!mounted) return;
       Navigator.pushAndRemoveUntil(
           context,
@@ -107,156 +107,161 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: _isloading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : currentUserDetails == null
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: _isloading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : currentUserDetails == null
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          const Text('No details found'),
+                          LogoutCta(
+                            onLogout: () async => _logout(),
+                          )
+                        ],
+                      ),
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Text('No details found'),
-                        LogoutCta(
-                          onLogout: () async => _logout(),
-                        )
-                      ],
-                    ),
-                  )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 40),
+                        const SizedBox(height: 40),
 
-                      // User Avatar
-                      CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Colors.deepPurple.shade100,
-                        child: Icon(
-                          Icons.person,
-                          size: 50,
-                          color: Colors.deepPurple.shade400,
+                        // User Avatar
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundColor: Colors.deepPurple.shade100,
+                          child: Icon(
+                            Icons.person,
+                            size: 50,
+                            color: Colors.deepPurple.shade400,
+                          ),
                         ),
-                      ),
 
-                      const SizedBox(height: 20),
+                        const SizedBox(height: 20),
 
-                      // User Email
-                      Text(
-                        user?.email ?? 'No email',
-                        style:
-                            Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                        textAlign: TextAlign.center,
-                      ),
-
-                      const SizedBox(height: 8),
-
-                      Text(
-                        'Welcome to TodoEasy',
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: Colors.grey[600],
-                            ),
-                        textAlign: TextAlign.center,
-                      ),
-
-                      const SizedBox(height: 60),
-                      Form(
-                          key: _formKey,
-                          child: Column(
-                            children: [
-                              TextFormField(
-                                onChanged: (value) {
-                                  setState(() {});
-                                },
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                controller: firstNameController,
-                                keyboardType: TextInputType.name,
-                                textInputAction: TextInputAction.next,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "First name cannot be empty";
-                                  }
-                                  if (value.length < 3) {
-                                    return "Name cannot be less then 3 letters";
-                                  }
-                                  return null;
-                                },
-                                decoration: const InputDecoration(
-                                  labelText: 'First Name',
-                                  hintText: 'Enter Your First Name',
-                                  prefixIcon: Icon(Icons.account_box_rounded),
-                                  border: OutlineInputBorder(),
-                                ),
+                        // User Email
+                        Text(
+                          user?.email ?? 'No email',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
                               ),
-                              const SizedBox(height: 20),
-                              TextFormField(
-                                onChanged: (value) {
-                                  setState(() {});
-                                },
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                controller: lastNameController,
-                                keyboardType: TextInputType.name,
-                                textInputAction: TextInputAction.done,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Last name cannot be empty";
-                                  }
-                                  if (value.length < 3) {
-                                    return "Last name cannot be less then 3 letters";
-                                  }
-                                  return null;
-                                },
-                                decoration: const InputDecoration(
-                                  labelText: 'Last Name',
-                                  hintText: 'Enter Your Last Name',
-                                  prefixIcon: Icon(Icons.account_box_rounded),
-                                  border: OutlineInputBorder(),
+                          textAlign: TextAlign.center,
+                        ),
+
+                        const SizedBox(height: 8),
+
+                        Text(
+                          'Welcome to TodoEasy',
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    color: Colors.grey[600],
+                                  ),
+                          textAlign: TextAlign.center,
+                        ),
+
+                        const SizedBox(height: 60),
+                        Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                TextFormField(
+                                  onChanged: (value) {
+                                    setState(() {});
+                                  },
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  controller: firstNameController,
+                                  keyboardType: TextInputType.name,
+                                  textInputAction: TextInputAction.next,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "First name cannot be empty";
+                                    }
+                                    if (value.length < 3) {
+                                      return "Name cannot be less then 3 letters";
+                                    }
+                                    return null;
+                                  },
+                                  decoration: const InputDecoration(
+                                    labelText: 'First Name',
+                                    hintText: 'Enter Your First Name',
+                                    prefixIcon: Icon(Icons.account_box_rounded),
+                                    border: OutlineInputBorder(),
+                                  ),
                                 ),
+                                const SizedBox(height: 20),
+                                TextFormField(
+                                  onChanged: (value) {
+                                    setState(() {});
+                                  },
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  controller: lastNameController,
+                                  keyboardType: TextInputType.name,
+                                  textInputAction: TextInputAction.done,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "Last name cannot be empty";
+                                    }
+                                    if (value.length < 3) {
+                                      return "Last name cannot be less then 3 letters";
+                                    }
+                                    return null;
+                                  },
+                                  decoration: const InputDecoration(
+                                    labelText: 'Last Name',
+                                    hintText: 'Enter Your Last Name',
+                                    prefixIcon: Icon(Icons.account_box_rounded),
+                                    border: OutlineInputBorder(),
+                                  ),
+                                ),
+                              ],
+                            )),
+
+                        const SizedBox(height: 20),
+
+                        ElevatedButton(
+                          onPressed: isSaveEnabled()
+                              ? () async {
+                                  await _saveProfile();
+                                }
+                              : null,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            minimumSize: const Size(double.infinity, 50),
+                          ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(width: 8),
+                              Text(
+                                'Save',
+                                style: TextStyle(fontSize: 16),
                               ),
                             ],
-                          )),
-
-                      const SizedBox(height: 20),
-
-                      ElevatedButton(
-                        onPressed: isSaveEnabled()
-                            ? () async {
-                                await _saveProfile();
-                              }
-                            : null,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
                           ),
-                          minimumSize: const Size(double.infinity, 50),
                         ),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(width: 8),
-                            Text(
-                              'Save',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 20),
+                        const SizedBox(height: 20),
 
-                      // Logout Button
-                      LogoutCta(onLogout: _logout),
-                      const SizedBox(height: 20),
-                    ],
-                  ),
+                        // Logout Button
+                        LogoutCta(onLogout: _logout),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
+        ),
       ),
     );
   }
