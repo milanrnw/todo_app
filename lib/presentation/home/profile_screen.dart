@@ -78,7 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (currentUserDetails == null) {
       setState(() {
-        _isloading = true;
+        _isloading = false;
       });
       return;
     } else {
