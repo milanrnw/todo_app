@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "371587610057-lq486it2rlk5skcc16aj4cdhrr380h6n.apps.googleusercontent.com",
+          "client_id": "371587610057-cdn38lej4bl1khn5lgi5v51172kbsdoj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.newtodoapp",
-            "certificate_hash": "16179295edb4212a28d851e090bac162f8c60ccc"
+            "certificate_hash": "7b1978d01a470c77c609e5af645c3117e1810633"
           }
         },
         {
@@ -28,7 +28,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAwBl7y8Wd0AaXqRVfFMcRueaY4jH7DAUo"
+          "current_key": "AIzaSyCKYo5GV5bH5pttWWk98J71lCMq951cH0A"
         }
       ],
       "services": {
